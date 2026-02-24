@@ -38,7 +38,34 @@ end sevenseg_decoder;
 
 architecture Behavioral of sevenseg_decoder is
 
+  --  component sevenseg_decoder is 
+  --      port (
+  --          i_Hex : in std_logic;
+  --          o_seg_n : out std_logic; 
+  --      );
+  --      end component sevenseg_decoder;
+  
+
+
 begin
+  with i_Hex select
+  o_seg_n <=  "0000000" when "0000",
+        "0010" when "0001",
+        "0100" when "0010",
+        "0010" when "0011",
+        "0100" when "0100",
+        "0010" when "0101",
+        "0100" when "0110",
+        "0010" when "0111",
+        "0100" when "1000",
+        "0010" when "1001",
+        "1110111" when "1010", -- A
+        "1111100" when "1011",
+        "1011000" when "1100",
+        "1011110" when "1101",
+        "1111001" when "1110",--14
+        "1110001" when "1111", --15
+        "0000000" when others;
 
 
 end Behavioral;
