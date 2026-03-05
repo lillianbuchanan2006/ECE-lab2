@@ -69,26 +69,23 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
   
-entity thirtyOneDayMonth_tb is --notice entity is empty.  The testbench has no external connections.
-end thirtyOneDayMonth_tb;
+entity sevenseg_decoder_tb is --notice entity is empty.  The testbench has no external connections.
+end sevenseg_decoder_tb;
 
-architecture test_bench of thirtyOneDayMonth_tb is 
+architecture test_bench of sevenseg_decoder_tb is 
 	
   -- declare the component of your top-level design unit under test (UUT) (looks very similar to entity declaration)
-  component thirtyoneDayMonth is
+  component sevenseg_decoder is
     port(
-	i_A : in std_logic;
-	i_B : in std_logic;
-	i_C : in std_logic;
-	i_D : in std_logic;
-	o_Y : out std_logic
+        i_Hex : in STD_LOGIC_VECTOR (3 downto 0);
+        o_seg_n : out STD_LOGIC_VECTOR (6 downto 0)
     );	
   end component;
 
   -- declare any additional components required
   
-  signal w_sw : std_logic_vector (3 downto 0):= (others=> '0');
-  signal w_Y : std_logic := '0';
+  signal w_hex : std_logic_vector (3 downto 0):= (others=> '0');
+  signal w_seg_n : std_logic_vector (6 downto 0);
   
   
 
@@ -96,13 +93,11 @@ architecture test_bench of thirtyOneDayMonth_tb is
 begin
 	-- PORT MAPS ----------------------------------------
 	-- map ports for any component instances (port mapping is like wiring hardware)
-    thirtyOneDayMonthMux_inst : thirtyOneDayMonth port map (
-			i_D => w_sw(3),
-			i_C => w_sw(2),
-			i_B => w_sw(1),
-			i_A => w_sw(0),
-	    		o_Y => w_Y
-        );
+    sevenseg_decoder_inst : sevenseg_decoder
+ port map (
+        i_Hex   => w_hex,     
+        o_seg_n => w_seg_n     
+    );
 	-----------------------------------------------------
 
 	-- PROCESSES ----------------------------------------	
@@ -111,41 +106,38 @@ begin
 	test_process : process 
 	begin
 	-- Place test cases here. The first two have been written for you
-		w_hex <= "1010"; wait for 10 ns; --- changed these two from og 
-            assert w_seg_n = '0001000' report "error on x0" severity failure; -- changed these two from og 
-        w_sw <= x"1"; wait for 10 ns;
-            assert w_Y = '1' report "error on Jan" severity failure;
-            
-        w_sw <= x"2"; wait for 10 ns;
-            assert w_Y = '0' report "error on Feb" severity failure;
-        w_sw <= x"3"; wait for 10 ns;
-            assert w_Y = '1' report "error on Mar" severity failure; 
-        w_sw <= x"4"; wait for 10 ns;
-            assert w_Y = '0' report "error on Apr" severity failure;
-        w_sw <= x"5"; wait for 10 ns;
-            assert w_Y = '1' report "error on May" severity failure;
-        w_sw <= x"6"; wait for 10 ns;
-            assert w_Y = '0' report "error on Jun" severity failure;
-        w_sw <= x"7"; wait for 10 ns;
-            assert w_Y = '1' report "error on Jul" severity failure;
-        w_sw <= x"8"; wait for 10 ns;
-            assert w_Y = '1' report "error on Aug" severity failure;
-        w_sw <= x"9"; wait for 10 ns;
-            assert w_Y = '0' report "error on Sep" severity failure;
-        w_sw <= x"A"; wait for 10 ns;
-            assert w_Y = '1' report "error on Oct" severity failure;
-        w_sw <= x"B"; wait for 10 ns;
-            assert w_Y = '0' report "error on Nov" severity failure;
-        w_sw <= x"C"; wait for 10 ns;
-            assert w_Y = '1' report "error on Dec" severity failure;
-        w_sw <= x"D"; wait for 10 ns;
-            assert w_Y = '0' report "error on x13" severity failure;
-        w_sw <= x"E"; wait for 10 ns;
-            assert w_Y = '1' report "error on x14" severity failure;
-        w_sw <= x"F"; wait for 10 ns;
-            assert w_Y = '0' report "error on x15" severity failure;
-          
-
+		w_hex <= x"0"; wait for 10 ns;
+            assert w_seg_n = "1000000" report "error on 0" severity failure;       
+        w_hex <= x"1"; wait for 10 ns;
+            assert w_seg_n = "1111001" report "error on 1" severity failure;     
+        w_hex <= x"2"; wait for 10 ns;
+            assert w_seg_n = "0100100" report "error on 2" severity failure;
+        w_hex <= x"3"; wait for 10 ns;
+            assert w_seg_n = "0110000" report "error on 3" severity failure;
+        w_hex <= x"4"; wait for 10 ns;
+            assert w_seg_n = "0011001" report "error on 4" severity failure;
+        w_hex <= x"5"; wait for 10 ns;
+            assert w_seg_n = "0010010" report "error on 5" severity failure;
+        w_hex <= x"6"; wait for 10 ns;
+            assert w_seg_n = "0000010" report "error on 6" severity failure;
+        w_hex <= x"7"; wait for 10 ns;
+            assert w_seg_n = "1111000" report "error on 7" severity failure;
+        w_hex <= x"8"; wait for 10 ns;
+            assert w_seg_n = "0000000" report "error on 8" severity failure;
+        w_hex <= x"9"; wait for 10 ns;
+            assert w_seg_n = "0010000" report "error on 9" severity failure;
+        w_hex <= x"A"; wait for 10 ns;
+            assert w_seg_n = "0001000" report "error on A" severity failure;
+        w_hex <= x"B"; wait for 10 ns;
+            assert w_seg_n = "0000011" report "error on B" severity failure;
+        w_hex <= x"C"; wait for 10 ns;
+            assert w_seg_n = "1000110" report "error on C" severity failure;
+        w_hex <= x"D"; wait for 10 ns;
+            assert w_seg_n = "0100001" report "error on D" severity failure;
+        w_hex <= x"E"; wait for 10 ns;
+            assert w_seg_n = "0000110" report "error on E" severity failure;
+        w_hex <= x"F"; wait for 10 ns;
+            assert w_seg_n = "0001110" report "error on F" severity failure;
 		wait; -- wait forever
 	end process;	
 	-----------------------------------------------------	
@@ -164,14 +156,3 @@ use IEEE.STD_LOGIC_1164.ALL;
 -- any Xilinx leaf cells in this code.
 --library UNISIM;
 --use UNISIM.VComponents.all;
-
-entity sevenseg_decoder_tb is
---  Port ( );
-end sevenseg_decoder_tb;
-
-architecture Behavioral of sevenseg_decoder_tb is
-
-begin
-
-
-end Behavioral;
