@@ -49,7 +49,7 @@ architecture Behavioral of sevenseg_decoder is
 
 begin -- done with the light 
   with i_Hex select
-  o_seg_n <=  "0000000" when "0000", --0 
+  o_seg_n <=  "1000000" when "0000", --0 
         "1111001" when "0001", -- 1
         "0100100" when "0010", -- 2
         "0110000" when "0011", -- 3
